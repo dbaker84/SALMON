@@ -1,0 +1,38 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : May 21, 2014, 6:23:03 PM
+    Author     : Dan
+*/
+
+body {
+    font-family: Monaco, Consolas, "Lucida Console", monospace;
+    color: #22C99E;
+    background-color: black;
+}
+
+div {
+    width: 900px;
+
+}
+
+#header {
+    height: 50px;
+}
+
+#mainbody   {
+    height: 700px;
+}
+
+.main   {
+    background-color: #222222;
+    overflow: hidden;
+    text-align: left;
+    margin-left: 50px;
+    margin-top: 10px;
+    font-size: 20px;
+}
+
