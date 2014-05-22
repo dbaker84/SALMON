@@ -7,33 +7,19 @@
 $(document).ready(function(){
 
     
-    $('#healmo').click(function(){        
-        if (mhp < 50){
-            mhp +=10;    
-        }
-        hpupdate();
-        $("#monsterstatus").html("Your monster rested and regained 10 hit points.");
-    });
-  
+
     
-    $('#saveg').click(function(){
-       localStorage.mhp = mhp;
-       localStorage.mstr = mstr; 
-       $("#monsterstatus").html("Your monster has been saved locally."); 
-    });
+//    $('#saveg').click(function(){
+//       localStorage.mhp = mhp;
+//       localStorage.mstr = mstr; 
+//       $("#status").html("You have been saved locally."); 
+//    });
     
-    $('#loadg').click(function(){
-       mhp = localStorage.getItem("mhp");
-       mstr = localStorage.getItem("mstr");
-       hpupdate();
-       strupdate();
-       $("#monsterstatus").html("Your monster has been loaded."); 
-    });
     
     
     $( "#inputboxform" ).submit(function( event ) {
         var value = $('#inputbox').val();
-        $("#mainbody").append('<p>'+value+'</p>');
+        $("#mainbody").append('<div>'+value+'<div>');
         $("#inputboxform").reset();
         console.log(value);
     });
