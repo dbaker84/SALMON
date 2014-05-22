@@ -21,10 +21,12 @@ div {
 
 #header {
     height: 50px;
+    margin-top: 10px;
 }
 
 #mainbody   {
     height: 700px;
+    margin-top: 1px;
 }
 
 .main   {
@@ -32,7 +34,17 @@ div {
     overflow: hidden;
     text-align: left;
     margin-left: 50px;
-    margin-top: 10px;
     font-size: 20px;
+}
+
+input {
+    border: 0px solid black;
+    background-color: #333333;
+    font-family: Monaco, Consolas, "Lucida Console", monospace;
+    font-weight: bold;
+    color: #22C99E;
+    font-size: 20px;
+    margin-left: 50px;
+    
 }
 

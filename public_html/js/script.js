@@ -33,7 +33,7 @@ $(document).ready(function(){
     
     $( "#inputboxform" ).submit(function( event ) {
         var value = $('#inputbox').val();
-        $("#mainbody").append('<p>Test ' + value + '</p>');
+        $("#mainbody").append('<p>'+value+'</p>');
         $("#inputboxform").reset();
         console.log(value);
     });
