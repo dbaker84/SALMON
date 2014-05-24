@@ -18,8 +18,9 @@ $(document).ready(function(){
     
     
     $( "#inputboxform" ).submit(function( event ) {
+        event.preventDefault()
         var value = $('#inputbox').val();
-        $("#mainbody").append('<div>'+value+'<div>');
+        $("#mainbody").append('<div>>  '+value+'<div>');
         $("#inputboxform").reset();
         console.log(value);
     });
