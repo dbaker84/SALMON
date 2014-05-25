@@ -6,9 +6,11 @@
 
 $(document).ready(function(){
     
-    cleanUp();
-    
-    function cleanUp(){
+    if (start = true){
+        start = false;
+        Intro();
+    }
+    else{
         switch(gamestate){
 //            case 'login':
 //                Login(input);
@@ -25,6 +27,28 @@ $(document).ready(function(){
             default:
                 break;
         };
+    };
+    
+    cleanUp();
+    
+    function cleanUp(){
+        switch(gamestate){
+//            case 'login':
+//                Login(input);
+//                break;
+//            case 'logged in':
+//                LoggedIn(input);
+//                break;
+//            case 'confirm module':
+//                ConfirmModule(input);
+//                break;
+            case 'making choice':
+                clearMain();
+                PresentChoice(curEvent);
+                break;
+            default:
+                break;
+        };
     }
     
     function changeState(newstate){
@@ -36,7 +60,6 @@ $(document).ready(function(){
         gamestate = previousstate;
     }
 
-    Intro();
     
     $( "#inputboxform" ).submit(function( event ) {
         
@@ -181,6 +204,7 @@ $(document).ready(function(){
         printToMain("This event requires a "+event.qual.q1+" stat of at least "+event.qual.v1);
         printToMain('What do you do?');
         brToMain();
+        changeState("making choice"); 
     }
     
     function BeginGame(){
@@ -197,7 +221,7 @@ $(document).ready(function(){
                 printToMain('You wake up in a Mars Hovel.  You are alone.');
                 brToMain();
                 presentChoice(PickNewEvent());
-                changeState("making choice"); 
+                
                 break;
             case 'Danielle':
                 printToMain('this module is not yet complete');
