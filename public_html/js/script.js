@@ -5,26 +5,31 @@
  */
 
 $(document).ready(function(){
-
-    var gamestate = 'login';
-    var playername = '';
-    var modulename = 'none';
-
-    function Intro(){
-            $("#mainbody").append('<br class="introscreen">');
-            $("#mainbody").append('<br class="introscreen">');
-            $("#mainbody").append('<div class="introscreen">......</div>');
-            $("#mainbody").append('<div class="introscreen">System Initialized.</div>');
-            $("#mainbody").append('<div class="introscreen">Beginning Simulation.</div>');
-            $("#mainbody").append('<div class="introscreen">......</div>');
-            $("#mainbody").append('<br class="introscreen">');
-            $("#mainbody").append('<br class="introscreen">');
-            $("#mainbody").append('<div class="introscreen">Welcome, Colonist.</div>');
-            $("#mainbody").append('<div class="introscreen">What is your name?</div>');
-            $("#mainbody").append('<br class="introscreen">');
+    
+    function changeState(newstate){
+        previousstate = gamestate;
+        gamestate = newstate;
     }
     
+    function revertState(){
+        gamestate = previousstate;
+    }
+
     Intro();
+    
+    $( "#inputboxform" ).submit(function( event ) {
+        
+        var value = $('#inputbox').val();
+        if (value !== null && value !== ''){
+            value = value.toUpperCase();
+            responseToMain(value);
+            event.preventDefault();
+            $('#inputbox').val('');
+            parseInput(value);
+            console.log(gamestate);
+        }        
+
+    });
     
 //    $('#saveg').click(function(){
 //       localStorage.mhp = mhp;
@@ -41,38 +46,47 @@ $(document).ready(function(){
     };
     
     function brToMain(){
-        $("#mainbody").append('<br>');
+        $("#mainbody").append('<br class="maintext">');
     };
     
     function clearMain(){
         $(".maintext").remove();
     }
     
-    
-    
-    $( "#inputboxform" ).submit(function( event ) {
-        
-        var value = $('#inputbox').val();
-        responseToMain(value);
-        event.preventDefault();
+    function parseInput(input){
         switch(gamestate){
             case 'login':
-                parseLogin(value);
+                Login(input);
                 break;
             case 'logged in':
-                parseLoggedIn(value);
+                LoggedIn(input);
                 break;
             case 'confirm module':
-                parseConfirmModule(value);
+                ConfirmModule(input);
                 break;
             default:
-                parseDefault(value);
                 break;
-        }
-        $('#inputbox').val('');
-    });
+        }       
+    }
     
-    function parseLogin(unicorn){
+    function Intro(){
+            $("#mainbody").append('<br class="introscreen">');
+            $("#mainbody").append('<br class="introscreen">');
+            $("#mainbody").append('<div class="introscreen">......</div>');
+            $("#mainbody").append('<div class="introscreen">System Initialized.</div>');
+            $("#mainbody").append('<div class="introscreen">Beginning Simulation.</div>');
+            $("#mainbody").append('<div class="introscreen">......</div>');
+            $("#mainbody").append('<br class="introscreen">');
+            $("#mainbody").append('<br class="introscreen">');
+            $("#mainbody").append('<div class="introscreen">Welcome, Colonist.</div>');
+            $("#mainbody").append('<div class="introscreen">What is your name?</div>');
+            $("#mainbody").append('<br class="introscreen">');   
+        }
+    
+    
+    function Login(unicorn){
+            $(".introscreen").remove();
+            clearMain();
             brToMain();
             playername = unicorn;
             printToMain("Welcome to SALMON, "+playername+".");
@@ -85,70 +99,83 @@ $(document).ready(function(){
             printToMain("[C] Conrad");
             printToMain("[D] Danielle");
             brToMain();
-            gamestate = 'logged in';
-            $(".introscreen").remove();
+            changeState('logged in');
+            
     };
     
-    function parseLoggedIn(unicorn){
-        $("body").css( "background-color", "blue" );
+    function LoggedIn(unicorn){
+//        $("body").css( "background-color", "blue" );
             switch(unicorn){
-                case 'a' || 'A':
+                case 'A':
                     modulename = "Alice";
                     break;
-                case 'b' || 'B':
+                case 'B':
                     modulename = "Benjamin";
                     break;
-                case 'c' || 'C':
+                case 'C':
                     modulename = "Conrad";
                     break;
-                case 'd' || 'D':
+                case 'D':
                     modulename = "Danielle";
                     break;
                 default:
                     break;
             };
 
-            if (modulename === 'none'){
+            if (modulename === null){
                 printToMain("That is not an option.  Please select your module.");             
             }
             else{
-                console.log("ask if correct");
-                $("body").css( "background-color", "red" );
                 printToMain('You chose '+modulename+'. Is this correct? [Y/N]');
-                gamestate = 'confirm module';
-            };
-
-    };
- 
-    function parseConfirmModule(unicorn){
-        console.log("unicorn equals "+unicorn);
-        switch(unicorn){
-            case 'n' | 'N':
-                printToMain("Please select your module.");
-                gamestate = 'logged in';
-                console.log("made it to N");
-                clearMain();
-                break;
-            case 'y' | 'Y':
-                printToMain('Opening Module "'+modulename+'" ...');
-                gamestate = 'confirmed';
-                console.log("made it to Y");
-                break;
-            default:
-                break;
-        };        
+                changeState('confirm module');
+            };        
     };
     
-    function parseDefault(unicorn){
+    function ConfirmModule(unicorn){
         switch(unicorn){
-            case 'clear':
+            case 'Y':
+                printToMain('You have confirmed '+modulename+".");
+                setStats();
+                changeState('begin game');
+                BeginGame();
+                break;
+            case 'N':
                 clearMain();
+//                printToMain('You have rejected your module');
+                changeState('logged in');
+                Login(playername);
                 break;
             default:
-                responseToMain(unicorn);
+                printToMain('not a valid choice.');
                 break;
-        };        
-    };
+        }
+    }
+    
+    function BeginGame(){
+        clearMain();
+        brToMain();
+        switch(modulename){
+            case 'Alice':
+                printToMain('this module is not yet complete');
+                break;
+            case 'Benjamin':
+                printToMain('this module is not yet complete');
+                break;
+            case 'Conrad':
+                printToMain('You wake up in a Mars Hovel.  You are alone.');
+                curEvent = PickEvent();
+                printToMain(curEvent.name);
+                printToMain(curEvent.body);
+                printToMain("This event requires a "+curEvent.qual.s1+" stat of at least "+curEvent.qual.v1);
+                printToMain('What do you do?');
+                brToMain();
+                break;
+            case 'Danielle':
+                printToMain('this module is not yet complete');
+                break;
+            default:
+        }
+    }
     
 
     
