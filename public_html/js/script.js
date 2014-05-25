@@ -6,6 +6,27 @@
 
 $(document).ready(function(){
     
+    cleanUp();
+    
+    function cleanUp(){
+        switch(gamestate){
+//            case 'login':
+//                Login(input);
+//                break;
+//            case 'logged in':
+//                LoggedIn(input);
+//                break;
+//            case 'confirm module':
+//                ConfirmModule(input);
+//                break;
+            case 'making choice':
+                PresentChoice(curEvent);
+                break;
+            default:
+                break;
+        };
+    }
+    
     function changeState(newstate){
         previousstate = gamestate;
         gamestate = newstate;
@@ -63,6 +84,9 @@ $(document).ready(function(){
                 break;
             case 'confirm module':
                 ConfirmModule(input);
+                break;
+            case 'making choice':
+                ProcessChoice(input);
                 break;
             default:
                 break;
@@ -151,6 +175,14 @@ $(document).ready(function(){
         }
     }
     
+    function presentChoice(event){
+        printToMain(event.name);
+        printToMain(event.body);
+        printToMain("This event requires a "+event.qual.q1+" stat of at least "+event.qual.v1);
+        printToMain('What do you do?');
+        brToMain();
+    }
+    
     function BeginGame(){
         clearMain();
         brToMain();
@@ -163,12 +195,9 @@ $(document).ready(function(){
                 break;
             case 'Conrad':
                 printToMain('You wake up in a Mars Hovel.  You are alone.');
-                curEvent = PickEvent();
-                printToMain(curEvent.name);
-                printToMain(curEvent.body);
-                printToMain("This event requires a "+curEvent.qual.s1+" stat of at least "+curEvent.qual.v1);
-                printToMain('What do you do?');
                 brToMain();
+                presentChoice(PickNewEvent());
+                changeState("making choice"); 
                 break;
             case 'Danielle':
                 printToMain('this module is not yet complete');
@@ -177,9 +206,22 @@ $(document).ready(function(){
         }
     }
     
+    function ProcessChoice(input){
+        switch(input){
+            case 'A':
+                printToMain("You chose A");
+                break;
+            case 'B':
+                printToMain("You chose B");
+                break;
+            case 'C':
+                printToMain("You chose C");
+                break;
+            default:
+                printToMain("You didn't choose correctly");
+                break;
+        }
+    };
+   
 
-    
-    
 });
-
-
